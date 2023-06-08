@@ -58,6 +58,7 @@ contract Post {
         hasPriceIfPayableContent(_isPaidContent, _price)
         returns (uint256)
     {
+        uint256 price = _isPaidContent ? _price : 0;
         posts[nextPostId] = PostStruct(
             nextPostId,
             msg.sender,
@@ -66,7 +67,7 @@ contract Post {
             0,
             false,
             _isPaidContent,
-            _price,
+            price,
             new address[](0)
         );
 
