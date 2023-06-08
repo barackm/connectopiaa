@@ -1,0 +1,59 @@
+// SPDX-License-Identifier: UNLICENSED
+pragma solidity ^0.8.9;
+
+import "./PostStruct.sol";
+
+contract Post {
+    mapping(uint256 => PostStruct) internal posts;
+    mapping(uint256 => mapping(address => bool)) internal paidPosts;
+    uint256 nextPostId = 0;
+
+    modifier hasValidContent(string memory _content) {
+        require(bytes(_content).length != 0, "PostStruct Content should not be empty.");
+        _;
+    }
+
+     modifier isContentPayable(uint256 _postId) {
+        require(posts[_postId].isPaidContent, "This post does not require subscription.");
+        _;
+    }
+
+    modifier hasPriceIfPayableContent(bool _isPaidContent, uint256 _price) {
+        require(!_isPaidContent || _price > 0, "Price must be greater than zero for payable content.");
+        _;
+    }
+
+    modifier doesPostExist(uint256 _postId) {
+        require(posts[_postId].postId != 0, "Invalid PostStruct ID");
+        _;
+    }
+
+    event PostCreated(uint256 postId, address indexed author, uint256 timestamp);
+    event PostLiked(uint256 postId, address indexed liker);
+    event PostPaid(uint256 postId, address indexed payer, uint256 amount);
+
+
+    function createPost(string memory _content, bool _isPaidContent, uint256 _price) public  hasValidContent(_content) hasPriceIfPayableContent(_isPaidContent, _price) returns(uint256) {
+        posts[nextPostId] = PostStruct(nextPostId, msg.sender, _content, block.timestamp, 0, false, _isPaidContent, _price, new address[](0));
+
+        nextPostId ++;
+        emit PostCreated(nextPostId, msg.sender, block.timestamp);
+
+        return nextPostId -1;
+    }
+
+    function hasPaidForPost(uint256 _postId, address _user) public view returns(bool) {
+        return paidPosts[_postId][_user];
+    }
+    
+    function getPosts() public view returns (PostStruct[] memory) {
+        PostStruct[] memory allPosts = new PostStruct[](nextPostId);
+
+        for (uint i = 0; i < nextPostId; i++) {
+            PostStruct storage post = posts[i];
+            allPosts[i] = post;
+        }
+
+        return allPosts;
+    }
+}
