@@ -1,3 +1,8 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   padding: 0;
@@ -7,7 +12,7 @@ body {
 }
 
 a {
-  color: #7dd3fc;
+  color: #0f1318;
   text-decoration: none;
 }
 
@@ -16,9 +21,10 @@ a {
 }
 
 html {
-  color-scheme: dark;
+  /* color-scheme: dark; */
 }
+
 body {
   color: #e7e8e8;
-  background: #0f1318;
+  background-color: rgb(243 244 246);
 }

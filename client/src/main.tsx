@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
 import "./styles/globals.css";
+import Navbar from "./Components/Navbar";
 
 // This is the chain your dApp will work on.
 // Change this to the chain your app is built for.
@@ -14,6 +15,7 @@ const root = createRoot(container!);
 root.render(
   <React.StrictMode>
     <ThirdwebProvider activeChain={activeChain}>
+      <Navbar />
       <App />
     </ThirdwebProvider>
   </React.StrictMode>
