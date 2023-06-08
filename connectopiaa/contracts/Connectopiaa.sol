@@ -44,4 +44,16 @@ contract Connectopiaa {
     function getPosts() public view returns (PostStruct[] memory) {
         return postInstance.getPosts();
     }
+
+    function getUserPosts(address _user)
+        public
+        view
+        returns (PostStruct[] memory)
+    {
+        return postInstance.getUserPosts(_user);
+    }
+
+    function getPayablePosts() public view returns (PostStruct[] memory) {
+        return postInstance.getPayablePosts();
+    }
 }

@@ -10,8 +10,8 @@ contract Post {
 
     modifier hasValidContent(string memory _content) {
         require(
-            bytes(_content).length != 0,
-            "PostStruct Content should not be empty."
+            bytes(_content).length > 0,
+            "PostStruct content should not be empty."
         );
         _;
     }
@@ -19,7 +19,7 @@ contract Post {
     modifier isContentPayable(uint256 _postId) {
         require(
             posts[_postId].isPaidContent,
-            "This post does not require subscription."
+            "PostStruct is not payable."
         );
         _;
     }
@@ -27,13 +27,16 @@ contract Post {
     modifier hasPriceIfPayableContent(bool _isPaidContent, uint256 _price) {
         require(
             !_isPaidContent || _price > 0,
-            "Price must be greater than zero for payable content."
+            "PostStruct price should be greater than 0."
         );
         _;
     }
 
     modifier doesPostExist(uint256 _postId) {
-        require(posts[_postId].postId != 0, "Invalid PostStruct ID");
+        require(
+            _postId < nextPostId,
+            "PostStruct with this id does not exist."
+        );
         _;
     }
 
@@ -106,4 +109,18 @@ contract Post {
         return userPosts;
     }
 
+    function getPayablePosts() public view returns (PostStruct[] memory) {
+        PostStruct[] memory payablePosts = new PostStruct[](nextPostId);
+        uint256 payablePostCount = 0;
+
+        for (uint i = 0; i < nextPostId; i++) {
+            PostStruct storage post = posts[i];
+            if (post.isPaidContent) {
+                payablePosts[payablePostCount] = post;
+                payablePostCount++;
+            }
+        }
+
+        return payablePosts;
+    }
 }
