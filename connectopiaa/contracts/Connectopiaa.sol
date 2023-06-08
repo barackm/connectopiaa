@@ -6,7 +6,7 @@ import "./Subscription.sol";
 import "./Like.sol";
 import "./PostStruct.sol";
 
-contract Connectopias {
+contract Connectopiaa {
     Post private postInstance;
     Subscription private subscriptionInstance;
     Like private likesInstance;
