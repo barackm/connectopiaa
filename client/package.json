@@ -16,8 +16,11 @@
     "@thirdweb-dev/react": "^3.11.1",
     "@thirdweb-dev/sdk": "^3.10.5",
     "ethers": "^5.7.2",
+    "formik": "^2.4.1",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.12.1",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.9",

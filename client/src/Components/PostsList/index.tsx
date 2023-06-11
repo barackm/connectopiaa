@@ -1,11 +1,13 @@
 import React from 'react';
 import Button from '../Button';
 import Post from './Post';
+import { useNavigate } from 'react-router-dom';
 
 interface PostsListProps { }
 
 const PostsList: React.FC<PostsListProps> = (props) => {
     const { } = props;
+    const navigate = useNavigate();
 
     // change the content
     const posts = [
@@ -77,12 +79,14 @@ const PostsList: React.FC<PostsListProps> = (props) => {
 
     return (
         <>
-            <section aria-label="Related articles" className="py-8 lg:py-24 bg-gray-50 dark:bg-gray-800">
+            <section aria-label="Related articles" className="py-8 lg:py-24 bg-gray-800">
                 <div className="px-4 mx-auto max-w-screen-xl">
                     <div className='flex gap-6'>
                         <h2 className="mb-8 text-4xl font-bold text-gray-900 dark:text-white">Posts</h2>
                         <div>
-                            <Button>Create</Button>
+                            <Button
+                                onClick={() => navigate('/new-post')}
+                            >Create</Button>
                         </div>
                     </div>
                     <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">

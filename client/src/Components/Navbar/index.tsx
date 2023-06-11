@@ -1,20 +1,20 @@
 import React from 'react';
 import { ConnectWallet } from "@thirdweb-dev/react";
 import logo from '../../assets/images/logo.png';
+import { Link } from 'react-router-dom';
 
-interface NavbarProps { }
 
-const Navbar: React.FC<NavbarProps> = (props) => {
-    const { } = props;
+const Navbar: React.FC = () => {
+
     return (
-        <nav className="bg-white w-full flex relative justify-between items-center mx-auto px-8 h-20">
+        <nav className="bg-white w-full flex justify-between items-center mx-auto px-8 h-16 sticky top-0 z-50">
             <div className="inline-flex">
-                <a className="_o6689fn" href="/"
+                <Link className="_o6689fn" to="/"
                 ><div className=" md:flex align-middle justify-center items-center gap-4">
-                        <img src={logo} alt="Logo" className='w-12'/>
+                        <img src={logo} alt="Logo" className='w-12' />
                         <span className='hidden md:block text-2xl'>Connetopiaa</span>
                     </div>
-                </a>
+                </Link>
             </div>
 
             <div className="hidden sm:block flex-shrink flex-grow-0 justify-start px-2">
@@ -23,20 +23,20 @@ const Navbar: React.FC<NavbarProps> = (props) => {
                         <button className="flex items-center text-left flex-grow-0 flex-shrink pl-2 relative w-60 border rounded-full  py-1" type="button">
                             <div className="block px-2 flex-grow flex-shrink overflow-hidden text-zinc-500">Start your search</div>
                             <div className="flex items-center justify-center relative  h-8 w-8 rounded-full">
-                            <svg
-                            viewBox="0 0 32 32"
-                            xmlns="http://www.w3.org/2000/svg"
-                            aria-hidden="true"
-                            role="presentation"
-                            focusable="false"
-                            className="w-4 h-4 text-gray-500 stroke[1.33333] stroke-current"
-                        >
-                            <g fill="none">
-                                <path
-                                    d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9"
-                                ></path>
-                            </g>
-                        </svg>
+                                <svg
+                                    viewBox="0 0 32 32"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    aria-hidden="true"
+                                    role="presentation"
+                                    focusable="false"
+                                    className="w-4 h-4 text-gray-500 stroke[1.33333] stroke-current"
+                                >
+                                    <g fill="none">
+                                        <path
+                                            d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9"
+                                        ></path>
+                                    </g>
+                                </svg>
                             </div>
                         </button>
                     </div>
