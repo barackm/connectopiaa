@@ -5,24 +5,30 @@ import userImage from '../../assets/images/user.png';
 import premium from '../../assets/images/premium.png';
 import likeIcon from '../../assets/images/heart.png';
 interface PostProps {
-    post: Post
+    post: PostData
 }
 
-interface Post {
+export interface PostData {
     postId: number;
+    author: string;
+    title: string;
     content: string;
+    image: string;
+    timestamp: number;
     likes: number;
+    isHidden: boolean;
     isPaidContent: boolean;
-    price: number;
-    owner: string;
+    price: string;
+    subscribers: string[];
 }
+
 
 const Post: React.FC<PostProps> = (props) => {
     const { post } = props;
-    const { content, isPaidContent, likes, owner, postId, price } = post;
+    const { content, isPaidContent, likes, author, price, image, title } = post;
 
-    const formatedOwnerAddr = owner.slice(0, 6) + '...' + owner.slice(-6);
-    const premiumContentSample = content.slice(0, 50) + '...';
+    const formatedOwnerAddr = author.slice(0, 6) + '...' + author.slice(-6);
+    const premiumContentSample = isPaidContent ? content.slice(0, 50) + '...' : content;
 
     const convertLikes = (likes: number) => {
         if (likes < 1000) {
@@ -35,14 +41,14 @@ const Post: React.FC<PostProps> = (props) => {
     }
 
     return (
-        <article className="max-w-xs">
+        <article className="">
             <a href="#">
-                <img src={postImage} className="mb-5 rounded-lg" alt="Image 1"
+                <img src={image || postImage} className="mb-5 rounded-lg w-full object-cover object-center h-40" alt="Image 1"
                     loading='lazy'
                 />
             </a>
             <h2 className="mb-2 text-xl font-bold leading-tight ">
-                <a href="#" className='text-white'>Post Title {isPaidContent && <img src={premium} alt="payable"
+                <a href="#" className='text-white'>{title} {isPaidContent && <img src={premium} alt="payable"
                     className='inline-block w-5 h-5 ml-2'
                 />}</a>
             </h2>

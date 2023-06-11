@@ -1,10 +1,20 @@
 import React from 'react';
-import { ConnectWallet } from "@thirdweb-dev/react";
 import logo from '../../assets/images/logo.png';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { useContractContext } from '../../contexts/ContractContext';
 
 const Navbar: React.FC = () => {
+    const { address, connect } = useContractContext();
+
+    const navigate = useNavigate();
+    const handleConnect = async () => {
+        if (address) return navigate('/new-post');
+        try {
+            connect();
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <nav className="bg-white w-full flex justify-between items-center mx-auto px-8 h-16 sticky top-0 z-50">
@@ -46,8 +56,8 @@ const Navbar: React.FC = () => {
                 <div className="flex justify-end items-center relative">
                     <div className="block">
                         <div className="inline relative">
-                            <button title="button" type="button" className="inline-flex items-center relative px-4 py-2 border rounded-full hover:shadow-lg bg-primary-500">
-                                <span>Connect</span>
+                            <button onClick={handleConnect} title="button" type="button" className="inline-flex items-center relative px-4 py-2 border rounded-full hover:shadow-lg bg-primary-500">
+                                <span>{address ? "Create Post" : "Connect"}</span>
                             </button>
                         </div>
                     </div>

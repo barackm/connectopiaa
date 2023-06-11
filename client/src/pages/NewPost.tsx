@@ -1,11 +1,12 @@
 import { Formik } from 'formik';
 import React from 'react';
 import * as Yup from 'yup';
-import axios from 'axios';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
 import Switch from '../Components/Switch';
 import { useContractContext } from '../contexts/ContractContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 interface NewPostProps { }
 
@@ -19,7 +20,9 @@ export interface NewPostFormValues {
 
 const NewPost: React.FC<NewPostProps> = (props) => {
     const [loading, setLoading] = React.useState(false);
-    const { publishPost } = useContractContext()
+    const { publishPost } = useContractContext();
+    const navigate = useNavigate();
+
     const validationSchema = Yup.object().shape({
         title: Yup.string().required('Title is required'),
         content: Yup.string().required('Content is required'),
@@ -31,10 +34,11 @@ const NewPost: React.FC<NewPostProps> = (props) => {
     const handleSubmit = async (values: NewPostFormValues) => {
         try {
             setLoading(true);
-            const data = await publishPost(values);
-            console.log(data);
-        } catch (error) {
-
+            await publishPost(values);
+            navigate('/');
+            setLoading(false);
+        } catch (error: any) {
+            toast.error(error.message);
         } finally {
             setLoading(false);
         }
@@ -63,7 +67,7 @@ const NewPost: React.FC<NewPostProps> = (props) => {
                             <Input name='image' label='Image URL' />
                             <Switch name='isPaidContent' label='Paid Content' labelPlacement='end' />
                             {values.isPaidContent &&
-                                <Input name='price' type='number' label='Price' />}
+                                <Input name='price' label='Price' />}
                             <Button loading={loading} type='submit'>Submit</Button>
                         </form>
                     </div>
