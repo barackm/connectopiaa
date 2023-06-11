@@ -7,6 +7,7 @@ import "./styles/globals.css";
 import Navbar from "./Components/Navbar";
 import { ThemeProvider, createTheme } from "@mui/material";
 import Footer from "./Components/Footer";
+import LoadingScreen from "./Components/LoadingScreen";
 
 // This is the chain your dApp will work on.
 // Change this to the chain your app is built for.
@@ -24,6 +25,7 @@ root.render(
         <ThirdwebProvider activeChain={activeChain}>
           <Navbar />
           <App />
+          <LoadingScreen />
           <Footer />
         </ThirdwebProvider>
       </Router>
