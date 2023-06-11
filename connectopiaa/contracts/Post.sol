@@ -17,10 +17,7 @@ contract Post {
     }
 
     modifier isContentPayable(uint256 _postId) {
-        require(
-            posts[_postId].isPaidContent,
-            "PostStruct is not payable."
-        );
+        require(posts[_postId].isPaidContent, "PostStruct is not payable.");
         _;
     }
 
@@ -50,6 +47,7 @@ contract Post {
 
     function createPost(
         string memory _content,
+        string memory _title,
         bool _isPaidContent,
         uint256 _price
     )
@@ -62,6 +60,7 @@ contract Post {
         posts[nextPostId] = PostStruct(
             nextPostId,
             msg.sender,
+            _title,
             _content,
             block.timestamp,
             0,
@@ -95,7 +94,9 @@ contract Post {
         return allPosts;
     }
 
-    function getUserPosts(address _user) public view returns (PostStruct[] memory) {
+    function getUserPosts(
+        address _user
+    ) public view returns (PostStruct[] memory) {
         PostStruct[] memory userPosts = new PostStruct[](nextPostId);
         uint256 userPostCount = 0;
 
