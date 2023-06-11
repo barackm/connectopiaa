@@ -47,10 +47,14 @@ const Input: React.FC<InputProps> = (props) => {
                 />
             )}
             {
-                errors && touched && errors[props.name || ''] && touched[props.name || ''] &&
-                <span>
-                    {errors[props.name || '' as any]}
-                </span>}
+                errors && touched && errors[props.name || ''] && touched[props.name || ''] && typeof errors[props.name || ''] === 'string' &&
+                <>
+                    <span className="text-red-500 text-sm bottom-0">
+                        {/* @ts-ignore */}
+                        {errors[props.name || '']}
+                    </span>
+                </>
+            }
         </div>
     );
 };

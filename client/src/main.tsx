@@ -25,7 +25,6 @@ root.render(
         <ThirdwebProvider activeChain={activeChain}>
           <Navbar />
           <App />
-          <LoadingScreen />
           <Footer />
         </ThirdwebProvider>
       </Router>
