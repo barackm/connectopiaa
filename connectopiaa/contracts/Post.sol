@@ -28,15 +28,6 @@ contract Post {
         );
         _;
     }
-
-    modifier doesPostExist(uint256 _postId) {
-        require(
-            _postId < nextPostId,
-            "PostStruct with this id does not exist."
-        );
-        _;
-    }
-
     event PostCreated(
         uint256 postId,
         address indexed author,

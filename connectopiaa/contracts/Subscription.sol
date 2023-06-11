@@ -3,6 +3,7 @@ pragma solidity ^0.8.9;
 
 import "./Post.sol";
 import "./PostStruct.sol";
+import "./PostStruct.sol";
 
 contract Subscription is Post {
     mapping(uint256 => uint256) public subscriberCount;
@@ -31,18 +32,21 @@ contract Subscription is Post {
         _;
     }
 
-    function payForPost(
-        uint256 _postId
-    )
-        public
-        payable
-        doesPostExist(_postId)
-        isContentPayable(_postId)
-        hasEnoughFound(_postId)
-        isOwnerOfPost(_postId)
-        hasAlreadyPaid(_postId)
-        returns (bool)
-    {
+    function payForPost(uint256 _postId) public payable returns (bool) {
+        require(posts[_postId].isPaidContent, "PostStruct is not payable.");
+        require(
+            msg.value >= posts[_postId].price,
+            "You don't have sufficiant found to subscribe."
+        );
+        require(
+            posts[_postId].author != msg.sender,
+            "You can't pay for your own post."
+        );
+        require(
+            !paidPosts[_postId][msg.sender],
+            "You have already paid for this post."
+        );
+
         PostStruct memory post = posts[_postId];
         paidPosts[_postId][msg.sender] = true;
         uint256 currentLength = post.subscribers.length;

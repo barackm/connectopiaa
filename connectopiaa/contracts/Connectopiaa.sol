@@ -47,9 +47,8 @@ contract Connectopiaa {
         return postInstance.hasPaidForPost(_postId, _user);
     }
 
-    function likePost(uint256 _postId) public returns (bool) {
+    function likePost(uint256 _postId) public {
         likesInstance.likePost(_postId);
-        return true;
     }
 
     function getPosts() public view returns (PostStruct[] memory) {
