@@ -8,6 +8,7 @@ import Navbar from "./Components/Navbar";
 import { ThemeProvider, createTheme } from "@mui/material";
 import Footer from "./Components/Footer";
 import LoadingScreen from "./Components/LoadingScreen";
+import { ToastContainer } from "react-toastify";
 
 // This is the chain your dApp will work on.
 // Change this to the chain your app is built for.
@@ -20,6 +21,7 @@ const theme = createTheme();
 
 root.render(
   <React.StrictMode>
+    <ToastContainer />
     <ThemeProvider theme={theme}>
       <Router>
         <ThirdwebProvider activeChain={activeChain}>
