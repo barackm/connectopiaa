@@ -18,11 +18,22 @@ contract Connectopiaa {
     }
 
     function createPost(
+        address _author,
+        string memory _title,
         string memory _content,
         bool _isPaidContent,
-        uint256 _price
+        uint256 _price,
+        string memory _image
     ) public returns (uint256) {
-        return postInstance.createPost(_content, _isPaidContent, _price);
+        return
+            postInstance.createPost(
+                _author,
+                _title,
+                _content,
+                _isPaidContent,
+                _price,
+                _image
+            );
     }
 
     function payForPost(uint256 _postId) public payable {
@@ -45,11 +56,9 @@ contract Connectopiaa {
         return postInstance.getPosts();
     }
 
-    function getUserPosts(address _user)
-        public
-        view
-        returns (PostStruct[] memory)
-    {
+    function getUserPosts(
+        address _user
+    ) public view returns (PostStruct[] memory) {
         return postInstance.getUserPosts(_user);
     }
 

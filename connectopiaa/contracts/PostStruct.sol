@@ -6,6 +6,7 @@ struct PostStruct {
     address author;
     string title;
     string content;
+    string image;
     uint256 timestamp;
     uint256 likes;
     bool isHidden;

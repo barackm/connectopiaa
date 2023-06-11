@@ -6,7 +6,7 @@ import "./PostStruct.sol";
 contract Post {
     mapping(uint256 => PostStruct) internal posts;
     mapping(uint256 => mapping(address => bool)) internal paidPosts;
-    uint256 nextPostId = 0;
+    uint256 nextPostId = 1;
 
     modifier hasValidContent(string memory _content) {
         require(
@@ -46,10 +46,12 @@ contract Post {
     event PostPaid(uint256 postId, address indexed payer, uint256 amount);
 
     function createPost(
-        string memory _content,
+        address _author,
         string memory _title,
+        string memory _content,
         bool _isPaidContent,
-        uint256 _price
+        uint256 _price,
+        string memory _image
     )
         public
         hasValidContent(_content)
@@ -59,9 +61,10 @@ contract Post {
         uint256 price = _isPaidContent ? _price : 0;
         posts[nextPostId] = PostStruct(
             nextPostId,
-            msg.sender,
+            _author,
             _title,
             _content,
+            _image,
             block.timestamp,
             0,
             false,
@@ -71,7 +74,7 @@ contract Post {
         );
 
         nextPostId++;
-        emit PostCreated(nextPostId, msg.sender, block.timestamp);
+        emit PostCreated(nextPostId, _author, block.timestamp);
 
         return nextPostId - 1;
     }
