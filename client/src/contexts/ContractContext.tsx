@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
 import { useAddress, useContract, useMetamask, useContractWrite } from '@thirdweb-dev/react'
 
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { NewPostFormValues } from "../pages/NewPost";
 const contractAddr = import.meta.env.VITE_CONTRACT_ADDRESS as string;
 
@@ -10,6 +10,8 @@ interface ContractContextProps {
     connect: (connectOptions?: { chainId?: number | undefined; } | undefined) => Promise<any>;
     address: string | undefined;
     getPosts: () => Promise<any>;
+    likePost: (id: number) => Promise<any>;
+    payForPost: (id: number, price: string) => Promise<any>;
 }
 
 const ContractContext = createContext<ContractContextProps>({} as ContractContextProps);
@@ -28,6 +30,9 @@ export const useContractContext = () => {
 export const ContractProvider = ({ children }: any) => {
     const { contract } = useContract(contractAddr);
     const { mutateAsync: createPost } = useContractWrite(contract, 'createPost');
+    const { mutateAsync: likePost } = useContractWrite(contract, 'likePost');
+    const { mutateAsync: payForPost } = useContractWrite(contract, 'payForPost');
+
     const address = useAddress();
     const connect = useMetamask();
 
@@ -44,13 +49,31 @@ export const ContractProvider = ({ children }: any) => {
         return data || []
     }
 
+    const likePostAsync = async (id: number) => {
+        const data = await likePost({
+            args: [id],
+            overrides: undefined,
+        });
+        return data
+    }
+
+    const payForPostAsync = async (id: number, price: string) => {
+        const data = await payForPost({
+            args: [id],
+            overrides: { value: ethers.utils.parseEther(price) },
+        });
+        return data
+    }
+
     return (
         <ContractContext.Provider
             value={{
                 address,
                 connect,
                 publishPost,
-                getPosts
+                getPosts,
+                likePost: likePostAsync,
+                payForPost: payForPostAsync
             }}
         >
             {children}

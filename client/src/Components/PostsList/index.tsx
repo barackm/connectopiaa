@@ -15,7 +15,7 @@ const PostsList: React.FC<PostsListProps> = (props) => {
     const { getPosts, address } = useContractContext();
     const navigate = useNavigate();
 
-    const handleGetPosts = useCallback(async () => {
+    const handleGetPosts = async () => {
         try {
             setLoading(true);
             const posts = await getPosts();
@@ -33,19 +33,18 @@ const PostsList: React.FC<PostsListProps> = (props) => {
                 subscribers: post.subscribers,
             }));
 
-            setPosts(parsedPosts);
-
+            setPosts(parsedPosts.filter((post: PostData) => post.title));
         } catch (error: any) {
             console.log(error.message)
             toast.error(error.message);
         } finally {
             setLoading(false);
         }
-    }, [address])
+    }
 
     useEffect(() => {
         handleGetPosts();
-    }, [handleGetPosts]);
+    }, [address]);
 
 
     return (
@@ -57,13 +56,13 @@ const PostsList: React.FC<PostsListProps> = (props) => {
                     <div>
                         <Button
                             onClick={() => navigate('/new-post')}
-                        >Create</Button>
+                        >Create Post</Button>
                     </div>
                 </div>
                 <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                     {
                         posts.map((post: PostData) => (
-                            <Post key={post.postId} post={post} />
+                            <Post key={post.postId} post={post} onRefresh={handleGetPosts} />
                         ))
                     }
                 </div>

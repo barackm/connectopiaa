@@ -4,8 +4,11 @@ import postImage from './postImage.jpg';
 import userImage from '../../assets/images/user.png';
 import premium from '../../assets/images/premium.png';
 import likeIcon from '../../assets/images/heart.png';
+import { useContractContext } from '../../contexts/ContractContext';
+import { ethers } from 'ethers';
 interface PostProps {
-    post: PostData
+    post: PostData;
+    onRefresh: () => void;
 }
 
 export interface PostData {
@@ -24,7 +27,10 @@ export interface PostData {
 
 
 const Post: React.FC<PostProps> = (props) => {
-    const { post } = props;
+    const { post, onRefresh } = props;
+    const { likePost, payForPost } = useContractContext();
+    const [loading, setLoading] = React.useState(false);
+    const [paying, setPaying] = React.useState(false);
     const { content, isPaidContent, likes, author, price, image, title } = post;
 
     const formatedOwnerAddr = author.slice(0, 6) + '...' + author.slice(-6);
@@ -39,6 +45,33 @@ const Post: React.FC<PostProps> = (props) => {
             return (likes / 1000000).toFixed(1) + 'M';
         }
     }
+
+    const handleLike = async () => {
+        if (loading) return;
+        setLoading(true);
+        try {
+            await likePost(post.postId);
+            onRefresh();
+        } catch (error: any) {
+            console.log(error.message)
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    const handlePayForContent = async () => {
+        if (paying) return;
+        setPaying(true);
+        try {
+            await payForPost(post.postId, price);
+            onRefresh();
+        } catch (error: any) {
+            console.log(error.message)
+        } finally {
+            setPaying(false);
+        }
+    }
+
 
     return (
         <article className="">
@@ -64,12 +97,14 @@ const Post: React.FC<PostProps> = (props) => {
                         {formatedOwnerAddr}
                     </a></span>
                 </div>
-                <button className='flex items-center mb-3 text-gray-500 hover:text-white'>
+                <button className={`flex items-center mb-3 text-gray-500 hover:text-white ${loading && 'animate-pulse'} `} onClick={handleLike}>
                     <img src={likeIcon} alt="like" className='w-5 h-5 inline-block mr-2' />
                     <strong>{convertLikes(likes)}</strong>
                 </button>
             </div>
             {isPaidContent && <Button
+                onClick={handlePayForContent}
+                loading={paying}
             >
                 Subscribe <small className='ml-2 font-bold'>({price} ETH)</small>
             </Button>}

@@ -67,7 +67,8 @@ const NewPost: React.FC<NewPostProps> = (props) => {
                             <Input name='image' label='Image URL' />
                             <Switch name='isPaidContent' label='Paid Content' labelPlacement='end' />
                             {values.isPaidContent &&
-                                <Input name='price' label='Price' />}
+                                <Input name='price' type='number' label='Price' step={0.001} />
+                            }
                             <Button loading={loading} type='submit'>Submit</Button>
                         </form>
                     </div>
