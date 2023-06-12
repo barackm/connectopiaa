@@ -61,8 +61,8 @@ const PostsList: React.FC<PostsListProps> = (props) => {
                         >Create Post</Button>
                     </div>}
                     <div className='mt-2'>
-                        <button>
-                            <img src={refreshIcon} alt="refresh" onClick={handleGetPosts} className='w-8 h-8' />
+                        <button onClick={handleGetPosts}>
+                            <img src={refreshIcon} alt="refresh" className='w-8 h-8' />
                         </button>
                     </div>
                 </div>
