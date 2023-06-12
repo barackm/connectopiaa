@@ -1,5 +1,5 @@
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Yup from 'yup';
 import Button from '../Components/Button';
 import Input from '../Components/Input';
@@ -21,7 +21,7 @@ export interface NewPostFormValues {
 
 const NewPost: React.FC<NewPostProps> = (props) => {
     const [loading, setLoading] = React.useState(false);
-    const { publishPost } = useContractContext();
+    const { publishPost, address } = useContractContext();
     const navigate = useNavigate();
 
     const validationSchema = Yup.object().shape({
@@ -45,6 +45,14 @@ const NewPost: React.FC<NewPostProps> = (props) => {
             setLoading(false);
         }
     };
+
+    useEffect(() => {
+        if (!address) {
+            toast.error('You need to connect to a wallet first');
+            navigate('/');
+        }
+    }
+        , [address, navigate]);
 
 
     return (

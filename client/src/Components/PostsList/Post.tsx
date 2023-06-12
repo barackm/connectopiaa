@@ -46,7 +46,7 @@ const Post: React.FC<PostProps> = (props) => {
 
 
     const handleLike = async () => {
-        if (loading) return;
+        if (loading || !address) return;
         setLoading(true);
         try {
             await likePost(post.postId);
