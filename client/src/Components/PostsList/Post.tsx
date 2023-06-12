@@ -90,8 +90,7 @@ const Post: React.FC<PostProps> = (props) => {
         <article className="">
             <PostDetails open={open} onClose={handleClose} post={post} loading={loading} onLike={handleLike} />
             <a href="#" onClick={() => {
-                console.log("Here we go")
-                if (!canViewContent) return;
+                if (!canViewContent) return toast.warning('You need to pay to view this content');
                 handleOpen();
             }}>
                 <img src={image || postImage} className="mb-5 rounded-lg w-full object-cover object-center h-40" alt="Image 1"
