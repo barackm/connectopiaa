@@ -1,6 +1,6 @@
 # Connectopiaa Application Setup
 
-Connectopiaa is a thirdweb and React Vite project for interacting with smart contracts from a React app. The application allows users to interact with the Connectopiaa smart contract and perform various actions.
+Connectopiaa is a cutting-edge decentralized social media platform that combines the power of blockchain technology with the familiarity of traditional social networks. It offers a secure and transparent environment for users to connect, share, and engage with others in a global community.
 
 ## Project Structure
 
@@ -30,7 +30,8 @@ To run the code locally, follow these steps:
     ```plaintext
     VITE_CONTRACT_ADDRESS=<contract_address>
 
-    Replace <contract_address> with the actual address of the deployed smart contract.
+Replace <contract_address> with the actual address of the deployed smart contract.
+
 5. Start the development server by running the command:
 
     ```bash
