@@ -84,7 +84,7 @@ const Post: React.FC<PostProps> = (props) => {
 
 
     const isPostOwner = address === author;
-    const canViewContent = isPostOwner || hasAlreadyPaid;
+    const canViewContent = (isPostOwner || hasAlreadyPaid) && address;
 
     return (
         <article className="">
