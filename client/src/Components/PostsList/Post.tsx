@@ -41,7 +41,7 @@ const Post: React.FC<PostProps> = (props) => {
     const { content, isPaidContent, likes, author, price, image, title } = post;
     const [hasAlreadyPaid, setHasAlreadyPaid] = React.useState(false);
     const formatedOwnerAddr = author.slice(0, 6) + '...' + author.slice(-6);
-    const premiumContentSample = isPaidContent ? content.slice(0, 50) + '...' : content;
+    const contentSample =  content.slice(0, 50) + '...';
 
 
 
@@ -103,7 +103,7 @@ const Post: React.FC<PostProps> = (props) => {
                     className='inline-block w-5 h-5 ml-2'
                 />}</a>
             </h2>
-            <p className="mb-4 font-light text-gray-500 dark:text-gray-400">{premiumContentSample}</p>
+            <p className="mb-4 font-light text-gray-500 dark:text-gray-400">{contentSample}</p>
             <div className='flex justify-between items-center ' >
                 <div className='flex items-center gap-2 mb-4 justify-center' >
                     <img
