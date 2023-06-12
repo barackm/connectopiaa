@@ -12,6 +12,7 @@ interface ContractContextProps {
     getPosts: () => Promise<any>;
     likePost: (id: number) => Promise<any>;
     payForPost: (id: number, price: string) => Promise<any>;
+    hasAlreadyPaid: (id: number) => Promise<boolean>;
 }
 
 const ContractContext = createContext<ContractContextProps>({} as ContractContextProps);
@@ -65,6 +66,11 @@ export const ContractProvider = ({ children }: any) => {
         return data
     }
 
+    const hasAlreadyPaid = async (id: number) => {
+        const data = await contract?.call('hasPaidForPost', [id, address]);
+        return data
+    }
+
     return (
         <ContractContext.Provider
             value={{
@@ -73,7 +79,8 @@ export const ContractProvider = ({ children }: any) => {
                 publishPost,
                 getPosts,
                 likePost: likePostAsync,
-                payForPost: payForPostAsync
+                payForPost: payForPostAsync,
+                hasAlreadyPaid
             }}
         >
             {children}

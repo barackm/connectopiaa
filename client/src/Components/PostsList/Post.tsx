@@ -5,9 +5,10 @@ import userImage from '../../assets/images/user.png';
 import premium from '../../assets/images/premium.png';
 import likeIcon from '../../assets/images/heart.png';
 import { useContractContext } from '../../contexts/ContractContext';
-import { ethers } from 'ethers';
 import { toast } from 'react-toastify';
 import { parseError } from '../../utils/errorHandler';
+import PostDetails from '../PostDetails';
+import { convertLikes } from '../../utils';
 interface PostProps {
     post: PostData;
     onRefresh: () => void;
@@ -30,23 +31,19 @@ export interface PostData {
 
 const Post: React.FC<PostProps> = (props) => {
     const { post, onRefresh } = props;
-    const { likePost, payForPost } = useContractContext();
+    const { likePost, payForPost, hasAlreadyPaid: hasAlreadyPaidAsync, address } = useContractContext();
     const [loading, setLoading] = React.useState(false);
     const [paying, setPaying] = React.useState(false);
-    const { content, isPaidContent, likes, author, price, image, title } = post;
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
+    const { content, isPaidContent, likes, author, price, image, title } = post;
+    const [hasAlreadyPaid, setHasAlreadyPaid] = React.useState(false);
     const formatedOwnerAddr = author.slice(0, 6) + '...' + author.slice(-6);
     const premiumContentSample = isPaidContent ? content.slice(0, 50) + '...' : content;
 
-    const convertLikes = (likes: number) => {
-        if (likes < 1000) {
-            return likes;
-        } else if (likes >= 1000 && likes < 1000000) {
-            return (likes / 1000).toFixed(1) + 'K';
-        } else {
-            return (likes / 1000000).toFixed(1) + 'M';
-        }
-    }
+
 
     const handleLike = async () => {
         if (loading) return;
@@ -76,10 +73,27 @@ const Post: React.FC<PostProps> = (props) => {
         }
     }
 
+    const checkIfAlreadyPaid = async () => {
+        const hasAlreadyPaid = await hasAlreadyPaidAsync(post.postId);
+        setHasAlreadyPaid(hasAlreadyPaid);
+    }
+
+    React.useEffect(() => {
+        checkIfAlreadyPaid();
+    }, [post]);
+
+
+    const isPostOwner = address === author;
+    const canViewContent = isPostOwner || hasAlreadyPaid;
 
     return (
         <article className="">
-            <a href="#">
+            <PostDetails open={open} onClose={handleClose} post={post} loading={loading} onLike={handleLike} />
+            <a href="#" onClick={() => {
+                console.log("Here we go")
+                if (!canViewContent) return;
+                handleOpen();
+            }}>
                 <img src={image || postImage} className="mb-5 rounded-lg w-full object-cover object-center h-40" alt="Image 1"
                     loading='lazy'
                 />
@@ -90,8 +104,8 @@ const Post: React.FC<PostProps> = (props) => {
                 />}</a>
             </h2>
             <p className="mb-4 font-light text-gray-500 dark:text-gray-400">{premiumContentSample}</p>
-            <div className='flex justify-between items-center '>
-                <div className='flex items-center gap-2 mb-4 justify-center'>
+            <div className='flex justify-between items-center ' >
+                <div className='flex items-center gap-2 mb-4 justify-center' >
                     <img
                         alt="Poster"
                         src={userImage}
@@ -106,7 +120,7 @@ const Post: React.FC<PostProps> = (props) => {
                     <strong>{convertLikes(likes)}</strong>
                 </button>
             </div>
-            {isPaidContent && <Button
+            {isPaidContent && !hasAlreadyPaid && !isPostOwner && <Button
                 onClick={handlePayForContent}
                 loading={paying}
             >
