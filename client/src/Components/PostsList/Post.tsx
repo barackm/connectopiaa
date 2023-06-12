@@ -6,6 +6,8 @@ import premium from '../../assets/images/premium.png';
 import likeIcon from '../../assets/images/heart.png';
 import { useContractContext } from '../../contexts/ContractContext';
 import { ethers } from 'ethers';
+import { toast } from 'react-toastify';
+import { parseError } from '../../utils/errorHandler';
 interface PostProps {
     post: PostData;
     onRefresh: () => void;
@@ -53,7 +55,8 @@ const Post: React.FC<PostProps> = (props) => {
             await likePost(post.postId);
             onRefresh();
         } catch (error: any) {
-            console.log(error.message)
+            const errorMessage = parseError(error);
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }
@@ -66,7 +69,8 @@ const Post: React.FC<PostProps> = (props) => {
             await payForPost(post.postId, price);
             onRefresh();
         } catch (error: any) {
-            console.log(error.message)
+            const errorMessage = parseError(error);
+            toast.error(errorMessage);
         } finally {
             setPaying(false);
         }

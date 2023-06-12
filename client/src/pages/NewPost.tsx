@@ -7,6 +7,7 @@ import Switch from '../Components/Switch';
 import { useContractContext } from '../contexts/ContractContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { parseError } from '../utils/errorHandler';
 
 interface NewPostProps { }
 
@@ -38,7 +39,8 @@ const NewPost: React.FC<NewPostProps> = (props) => {
             navigate('/');
             setLoading(false);
         } catch (error: any) {
-            toast.error(error.message);
+            const errorMessage = parseError(error);
+            toast.error(errorMessage);
         } finally {
             setLoading(false);
         }

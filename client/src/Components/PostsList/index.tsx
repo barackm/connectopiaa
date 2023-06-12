@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import Button from '../Button';
+import refreshIcon from '../../assets/images/refresh.png';
 import Post, { PostData } from './Post';
 import { useNavigate } from 'react-router-dom';
 import { useContractContext } from '../../contexts/ContractContext';
@@ -13,6 +14,7 @@ const PostsList: React.FC<PostsListProps> = (props) => {
     const [posts, setPosts] = React.useState([]);
     const [loading, setLoading] = React.useState(false);
     const { getPosts, address } = useContractContext();
+
     const navigate = useNavigate();
 
     const handleGetPosts = async () => {
@@ -51,12 +53,17 @@ const PostsList: React.FC<PostsListProps> = (props) => {
         <section aria-label="Related articles" className="py-8 lg:py-24 bg-gray-800">
             {loading && <LoadingScreen />}
             <div className="px-4 mx-auto max-w-screen-xl">
-                <div className='flex gap-6'>
+                <div className='flex gap-6 '>
                     <h2 className="mb-8 text-4xl font-bold text-gray-900 dark:text-white">Posts</h2>
-                    <div>
+                    <div className=''>
                         <Button
                             onClick={() => navigate('/new-post')}
                         >Create Post</Button>
+                    </div>
+                    <div className='mt-2'>
+                        <button>
+                            <img src={refreshIcon} alt="refresh" onClick={handleGetPosts} className='w-8 h-8' />
+                        </button>
                     </div>
                 </div>
                 <div className="grid gap-12 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
