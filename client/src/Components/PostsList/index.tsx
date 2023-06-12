@@ -55,14 +55,14 @@ const PostsList: React.FC<PostsListProps> = (props) => {
             <div className="px-4 mx-auto max-w-screen-xl">
                 <div className='flex gap-6 '>
                     <h2 className="mb-8 text-4xl font-bold text-gray-900 dark:text-white">Posts</h2>
-                    <div className=''>
+                    {address && <div className=''>
                         <Button
                             onClick={() => navigate('/new-post')}
                         >Create Post</Button>
-                    </div>
+                    </div>}
                     <div className='mt-2'>
-                        <button>
-                            <img src={refreshIcon} alt="refresh" onClick={handleGetPosts} className='w-8 h-8' />
+                        <button onClick={handleGetPosts}>
+                            <img src={refreshIcon} alt="refresh" className='w-8 h-8' />
                         </button>
                     </div>
                 </div>
