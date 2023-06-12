@@ -29,8 +29,7 @@ To run the code locally, follow these steps:
 
     ```plaintext
     VITE_CONTRACT_ADDRESS=<contract_address>
-
-Replace <contract_address> with the actual address of the deployed smart contract.
+Replace `<contract_address>` with the actual address of the deployed smart contract.
 
 5. Start the development server by running the command:
 
