@@ -120,7 +120,7 @@ const Post: React.FC<PostProps> = (props) => {
                     <strong>{convertLikes(likes)}</strong>
                 </button>
             </div>
-            {isPaidContent && !hasAlreadyPaid && !isPostOwner && <Button
+            {isPaidContent && !hasAlreadyPaid && !isPostOwner && address && <Button
                 onClick={handlePayForContent}
                 loading={paying}
             >
