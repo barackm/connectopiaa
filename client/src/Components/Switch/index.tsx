@@ -22,7 +22,6 @@ const Switch: React.FC<SwitchProps> = (props) => {
     const { setFieldValue, handleChange, errors, touched, setFieldTouched, values } = formikContext || {};
 
     const handleToggle = () => {
-        console.log("wait")
         if (values && formikContext) {
             setFieldValue && setFieldValue(name, !values[name]);
         } else {
@@ -31,7 +30,6 @@ const Switch: React.FC<SwitchProps> = (props) => {
     };
 
     const handleBlur = (e: any) => {
-        console.log("What is happening here?")
         setFieldTouched && setFieldTouched(name || '', true);
         onBlur && onBlur(e);
     }

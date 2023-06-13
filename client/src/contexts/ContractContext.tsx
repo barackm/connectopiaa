@@ -1,4 +1,4 @@
-import { createContext, useContext } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { useAddress, useContract, useMetamask, useContractWrite } from '@thirdweb-dev/react'
 
 import { BigNumber, ethers } from "ethers";
@@ -13,6 +13,7 @@ interface ContractContextProps {
     likePost: (id: number) => Promise<any>;
     payForPost: (id: number, price: string) => Promise<any>;
     hasAlreadyPaid: (id: number) => Promise<boolean>;
+    initialized: boolean;
 }
 
 const ContractContext = createContext<ContractContextProps>({} as ContractContextProps);
@@ -33,9 +34,17 @@ export const ContractProvider = ({ children }: any) => {
     const { mutateAsync: createPost } = useContractWrite(contract, 'createPost');
     const { mutateAsync: likePost } = useContractWrite(contract, 'likePost');
     const { mutateAsync: payForPost } = useContractWrite(contract, 'payForPost');
+    const [initialized, setInitialized] = useState(false);
+
+
 
     const address = useAddress();
     const connect = useMetamask();
+
+    useEffect(() => {
+        if (!contract) return;
+        setInitialized(true);
+    }, [contract]);
 
     const publishPost = async (form: NewPostFormValues) => {
         const data = await createPost({
@@ -80,7 +89,8 @@ export const ContractProvider = ({ children }: any) => {
                 getPosts,
                 likePost: likePostAsync,
                 payForPost: payForPostAsync,
-                hasAlreadyPaid
+                hasAlreadyPaid,
+                initialized
             }}
         >
             {children}

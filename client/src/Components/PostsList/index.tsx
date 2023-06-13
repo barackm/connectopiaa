@@ -12,12 +12,14 @@ interface PostsListProps { }
 
 const PostsList: React.FC<PostsListProps> = (props) => {
     const [posts, setPosts] = React.useState([]);
-    const [loading, setLoading] = React.useState(false);
-    const { getPosts, address } = useContractContext();
+    const [loading, setLoading] = React.useState(true);
+    const { getPosts, address, initialized } = useContractContext();
 
     const navigate = useNavigate();
 
     const handleGetPosts = async () => {
+        if(!initialized) return;
+        
         try {
             setLoading(true);
             const posts = await getPosts();
@@ -37,7 +39,6 @@ const PostsList: React.FC<PostsListProps> = (props) => {
 
             setPosts(parsedPosts.filter((post: PostData) => post.title));
         } catch (error: any) {
-            console.log(error.message)
             toast.error(error.message);
         } finally {
             setLoading(false);
@@ -46,11 +47,11 @@ const PostsList: React.FC<PostsListProps> = (props) => {
 
     useEffect(() => {
         handleGetPosts();
-    }, [address]);
+    }, [initialized]);
 
 
     return (
-        <section aria-label="Related articles" className="py-8 lg:py-24 bg-gray-800">
+        <section aria-label="Related articles" className="py-8 lg:py-16 bg-gray-800">
             {loading && <LoadingScreen />}
             <div className="px-4 mx-auto max-w-screen-xl">
                 <div className='flex gap-6 '>

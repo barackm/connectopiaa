@@ -2,17 +2,20 @@ import React from 'react';
 import logo from '../../assets/images/logo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContractContext } from '../../contexts/ContractContext';
+import { toast } from 'react-toastify';
+import { parseError } from '../../utils/errorHandler';
 
 const Navbar: React.FC = () => {
     const { address, connect } = useContractContext();
 
     const navigate = useNavigate();
+    
     const handleConnect = async () => {
         if (address) return navigate('/new-post');
         try {
-            connect();
+            await connect();
         } catch (error) {
-            console.log(error);
+            toast.error(parseError(error));
         }
     };
 
