@@ -8,7 +8,7 @@ import { useContractContext } from '../../contexts/ContractContext';
 import { toast } from 'react-toastify';
 import { parseError } from '../../utils/errorHandler';
 import PostDetails from '../PostDetails';
-import { convertLikes } from '../../utils';
+import { convertContent, convertLikes } from '../../utils';
 interface PostProps {
     post: PostData;
     onRefresh: () => void;
@@ -87,7 +87,7 @@ const Post: React.FC<PostProps> = (props) => {
 
     const isPostOwner = address === author;
     const canViewContent = ((isPostOwner || hasAlreadyPaid) && address) || !isPaidContent;
-
+    
     return (
         <article className="">
             <PostDetails open={open} onClose={handleClose} post={post} loading={loading} onLike={handleLike} />

@@ -4,10 +4,12 @@ import likeIcon from '../../assets/images/heart.png';
 import Typography from '@mui/material/Typography';
 import userImage from '../../assets/images/user.png';
 import Modal from '@mui/material/Modal';
+import ReactHtmlParser from 'react-html-parser';
+import DOMPurify from 'dompurify';
 
 import { PostData } from '../PostsList/Post';
 import { Fade } from '@mui/material';
-import { convertLikes } from '../../utils';
+import { convertContent, convertLikes } from '../../utils';
 import Button from '../Button';
 
 interface PostDetailsProps {
@@ -42,6 +44,11 @@ const PostDetails: React.FC<PostDetailsProps> = (props) => {
     const { content, likes, author, image, title } = post;
     const formatedOwnerAddr = author.slice(0, 6) + '...' + author.slice(-6);
 
+    const convertedContent = convertContent(content);
+
+    const sanitizedHtml = DOMPurify.sanitize(convertedContent);
+    const parsedHtml = ReactHtmlParser(sanitizedHtml);
+
     return (
         <Modal
             aria-labelledby="transition-modal-title"
@@ -60,9 +67,8 @@ const PostDetails: React.FC<PostDetailsProps> = (props) => {
                         {title}
                     </Typography>
                     <Typography id="modal-modal-description" sx={{ mt: 2 }} className='text-gray-800 pb-8'>
-                        {content}
+                        {parsedHtml}
                     </Typography>
-
                     <div className='flex justify-between'>
                         <div className='flex items-center gap-2 mb-4 justify-center' >
                             <img
