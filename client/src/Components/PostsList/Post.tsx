@@ -46,7 +46,8 @@ const Post: React.FC<PostProps> = (props) => {
 
 
     const handleLike = async () => {
-        if (loading || !address) return;
+        if (loading) return;
+        if (!address) return toast.warning('You need to connect your wallet to like this post');
         setLoading(true);
         try {
             await likePost(post.postId);
@@ -61,6 +62,7 @@ const Post: React.FC<PostProps> = (props) => {
 
     const handlePayForContent = async () => {
         if (paying) return;
+        if(!address) return toast.warning('You need to connect your wallet to pay for this content');
         setPaying(true);
         try {
             await payForPost(post.postId, price);
@@ -119,7 +121,7 @@ const Post: React.FC<PostProps> = (props) => {
                     <strong>{convertLikes(likes)}</strong>
                 </button>
             </div>
-            {isPaidContent && !hasAlreadyPaid && !isPostOwner && address && <Button
+            {isPaidContent && !hasAlreadyPaid && !isPostOwner && <Button
                 onClick={handlePayForContent}
                 loading={paying}
             >
